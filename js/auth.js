@@ -161,3 +161,13 @@ if (newsletterForm) {
 
 // Initialize auth check on page load
 checkAuth();
+
+// Listen for authentication state changes
+supabaseClient.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+        // Redirect to myaccount.html after successful login (e.g., OAuth callback)
+        if (window.location.pathname.includes('signup.html') || window.location.hash.includes('access_token')) {
+            window.location.href = 'myaccount.html';
+        }
+    }
+});
