@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="post-title">Post - ComposerUnion</title>
+    <meta name="description" id="post-description" content="Read the latest from ComposerUnion.">
+    
+    <!-- Google AdSense Code -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+     crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="notion-header">
+        <nav class="notion-navbar">
+            <div class="notion-logo">
+                <a href="index.html"><img src="logoBlack.png" alt="ComposerUnion Logo"></a>
+            </div>
+            <ul class="notion-nav-links">
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="academy.html">Academy</a></li>
+            </ul>
+            <div class="notion-auth-buttons">
+                <a href="signup.html" class="notion-login-signup-btn" id="header-auth-button">Log In / Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="post-layout">
+        <article class="post-content">
+            <h1 id="article-title"></h1>
+            <div class="post-meta">
+                <span id="post-author"></span>
+                <span id="post-date"></span>
+                <span id="post-category"></span>
+            </div>
+
+            <img id="post-image" src="" alt="">
+
+            <!-- Top of Content Ad (Responsive) -->
+            <div class="ad-container ad-in-content">
+                <ins class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="5544332211"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+            <div id="article-content">
+                <!-- HTML content will be inserted here -->
+            </div>
+
+            <!-- Bottom of Content Ad (Responsive) -->
+            <div class="ad-container ad-in-content">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-format="autorelaxed"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="6677889900"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </article>
+
+        <aside class="sidebar">
+            <!-- Sidebar Ad Unit (300x250 Rectangle) -->
+            <div class="ad-container ad-sidebar">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="9988776655"
+                     data-ad-format="rectangle"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+            <h3>Related Posts</h3>
+            <div id="related-posts">
+                <!-- Related posts will be loaded here -->
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ComposerUnion. All rights reserved.</p>
+    </footer>
+
+    <!-- CRITICAL: Load Supabase library FIRST, before any custom scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Then load your custom scripts in order -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/blog.js"></script>
+
+    <!-- Custom Modal Structure -->
+    <div id="custom-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-title"></h2>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Custom Alert/Toast Notification -->
+    <div id="custom-alert" class="custom-alert"></div>
+    
+    <script src="js/ui.js"></script> <!-- Include custom UI script AFTER modal and alert HTML -->
+</body>
+</html>

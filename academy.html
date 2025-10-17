@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComposerUnion Academy - Orchestral Music Courses & Production</title>
+    <meta name="description" content="ComposerUnion Academy offers future online courses and masterclasses for orchestral music composition, cinematic scoring, and music production. Join our waitlist for updates.">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="notion-header">
+        <nav class="notion-navbar">
+            <div class="notion-logo">
+                <a href="index.html"><img src="logoBlack.png" alt="ComposerUnion Logo"></a>
+            </div>
+            <ul class="notion-nav-links">
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="academy.html">Academy</a></li>
+            </ul>
+            <div class="notion-auth-buttons">
+                <a href="signup.html" class="notion-login-signup-btn" id="header-auth-button">Log In / Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="academy-main-content">
+        <section class="academy-hero">
+            <h1>ComposerUnion Academy: Elevate Your Orchestral Music</h1>
+            <p>Unlock your potential in orchestral music composition and production. ComposerUnion Academy is meticulously crafting a suite of online courses, masterclasses, and resources designed for aspiring and professional composers alike.</p>
+            <p>Whether you're delving into cinematic scoring, refining your orchestration techniques, or exploring advanced sound design for virtual instruments, our academy will provide the tools and knowledge you need to excel.</p>
+        </section>
+
+        <section class="academy-features">
+            <h2>What to Expect from Our Future Online Courses:</h2>
+            <ul>
+                <li><strong>Comprehensive Modules:</strong> From foundational theory to advanced compositional techniques.</li>
+                <li><strong>Expert-Led Masterclasses:</strong> Learn from seasoned professionals in the orchestral music industry.</li>
+                <li><strong>Practical Production Skills:</strong> Master mixing, mastering, and implementing virtual instruments.</li>
+                <li><strong>Community & Feedback:</strong> Engage with a vibrant community and receive constructive criticism.</li>
+                <li><strong>Flexible Learning:</strong> Access courses anytime, anywhere, at your own pace.</li>
+            </ul>
+        </section>
+
+        <section class="academy-coming-soon">
+            <h2>Academy Opening Soon!</h2>
+            <p>We are diligently working to bring you an unparalleled learning experience. Our online courses are currently under development and will be launching in the near future. Stay tuned for updates!</p>
+            <form id="waitlist-form">
+                <input type="email" id="waitlist-email" placeholder="Join our waitlist for early access & updates" required>
+                <button type="submit">Notify Me</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ComposerUnion. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+
+    <!-- Custom Modal Structure -->
+    <div id="custom-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-title"></h2>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Custom Alert/Toast Notification -->
+    <div id="custom-alert" class="custom-alert"></div>
+    
+    <script src="js/ui.js"></script> <!-- Include custom UI script AFTER modal and alert HTML -->
+</body>
+</html>

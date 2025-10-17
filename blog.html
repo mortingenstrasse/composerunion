@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - ComposerUnion</title>
+    <meta name="description" content="Browse articles on music composition, production, VSTs, and industry news.">
+    
+    <!-- Google AdSense Code -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+     crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="notion-header">
+        <nav class="notion-navbar">
+            <div class="notion-logo">
+                <a href="index.html"><img src="logoBlack.png" alt="ComposerUnion Logo"></a>
+            </div>
+            <ul class="notion-nav-links">
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="academy.html">Academy</a></li>
+            </ul>
+            <div class="notion-auth-buttons">
+                <a href="signup.html" class="notion-login-signup-btn" id="header-auth-button">Log In / Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="notion-blog-layout">
+        <aside class="notion-sidebar">
+            <div class="tools-craft-section">
+                <h1 class="tools-craft-title">ComposerUnion</h1>
+                <p class="tools-craft-description">The website for world music composers.</p>
+                <hr class="notion-divider">
+            </div>
+            <ul id="category-filter" class="notion-category-filter">
+                <li><a href="#" data-category="all">All</a></li>
+                <li><a href="#" data-category="cinematic composing">Cinematic Composing</a></li>
+                <li><a href="#" data-category="stock music composing">Stock Music</a></li>
+                <li><a href="#" data-category="music producing">Music Producing</a></li>
+                <li><a href="#" data-category="VSTs/software">VSTs/Software</a></li>
+                <li><a href="#" data-category="musical products">Musical Products</a></li>
+                <li><a href="#" data-category="AI Music">AI Music</a></li>
+                <li><a href="#" data-category="news">News</a></li>
+            </ul>
+
+            <!-- Sidebar Ad Unit (300x600 Half Page) - Keeping for now, but will likely remove or restyle -->
+            <div class="ad-container ad-sidebar">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="1122334455"
+                     data-ad-format="vertical"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </aside>
+
+        <section class="blog-posts">
+            <div id="posts-container">
+                <!-- Blog posts will be loaded here via JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ComposerUnion. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/blog.js"></script>
+
+    <!-- Custom Modal Structure -->
+    <div id="custom-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-title"></h2>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Custom Alert/Toast Notification -->
+    <div id="custom-alert" class="custom-alert"></div>
+    
+    <script src="js/ui.js"></script> <!-- Include custom UI script AFTER modal and alert HTML -->
+</body>
+</html>

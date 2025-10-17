@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComposerUnion - Music Blog & Community</title>
+    <meta name="description" content="Join ComposerUnion for insights on cinematic composing, stock music, VSTs, and AI music production.">
+    
+    <!-- Google AdSense Code (Replace with your actual publisher ID) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+     crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="notion-header">
+        <nav class="notion-navbar">
+            <div class="notion-logo">
+                <a href="index.html"><img src="logoBlack.png" alt="ComposerUnion Logo"></a>
+            </div>
+            <ul class="notion-nav-links">
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="academy.html">Academy</a></li>
+            </ul>
+            <div class="notion-auth-buttons">
+                <a href="signup.html" class="notion-login-signup-btn" id="header-auth-button">Log In / Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Header Ad Unit (728x90 Leaderboard) -->
+    <div class="ad-container ad-header">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="1234567890"
+             data-ad-format="horizontal"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <main>
+        <section class="hero-image-section">
+            <img src="heroimage.jpg" alt="Hero Image" class="hero-image">
+            <div class="hero-text-overlay">
+                <h1 class="hero-title">ComposerUnion</h1>
+                <p class="hero-description">The website for world music composers.</p>
+            </div>
+        </section>
+
+        <div class="notion-blog-layout">
+            <aside class="notion-sidebar">
+                <div class="tools-craft-section">
+                    <h1 class="tools-craft-title">Latest</h1>
+                    <hr class="notion-divider">
+                </div>
+                <ul id="category-filter" class="notion-category-filter">
+                    <li><a href="#" data-category="all">All</a></li>
+                    <li><a href="#" data-category="cinematic composing">Cinematic Composing</a></li>
+                    <li><a href="#" data-category="stock music composing">Stock Music</a></li>
+                    <li><a href="#" data-category="music producing">Music Producing</a></li>
+                    <li><a href="#" data-category="VSTs/software">VSTs/Software</a></li>
+                    <li><a href="#" data-category="musical products">Musical Products</a></li>
+                    <li><a href="#" data-category="AI Music">AI Music</a></li>
+                    <li><a href="#" data-category="news">News</a></li>
+                </ul>
+            </aside>
+
+            <section class="blog-posts">
+                <div id="posts-container" class="featured-posts">
+                    <!-- Featured posts will be loaded here via JavaScript -->
+                </div>
+            </section>
+        </div>
+
+        <!-- Mid-content Ad Unit (336x280 Rectangle) -->
+        <div class="ad-container ad-mid-content">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="0987654321"
+                 data-ad-format="rectangle"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <section class="newsletter">
+            <h2>Stay Updated</h2>
+            <p>Don't miss new articles, announcements, and campaigns!</p>
+            <form id="newsletter-form">
+                <input type="email" id="newsletter-email" placeholder="Your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ComposerUnion. All rights reserved.</p>
+    </footer>
+
+    <!-- CRITICAL: Load Supabase library FIRST, before any custom scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Then load your custom scripts in order -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/blog.js"></script>
+
+    <!-- Custom Modal Structure -->
+    <div id="custom-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-title"></h2>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Custom Alert/Toast Notification -->
+    <div id="custom-alert" class="custom-alert"></div>
+    
+    <script src="js/ui.js"></script> <!-- Include custom UI script AFTER modal and alert HTML -->
+</body>
+</html>
