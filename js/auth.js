@@ -136,6 +136,31 @@ if (toggleSignup) {
     });
 }
 
+// Forgot password functionality
+const forgotPasswordLink = document.getElementById('forgot-password');
+if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const loginEmail = document.getElementById('login-email').value;
+
+        if (!loginEmail) {
+            window.showCustomAlert('Please enter your email in the login form to reset your password.', 'error');
+            return;
+        }
+
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(loginEmail, {
+            redirectTo: window.location.origin + '/myaccount.html' // Redirect to myaccount page after password reset
+        });
+
+        if (error) {
+            window.showCustomAlert('Error sending password reset email: ' + error.message, 'error');
+            return;
+        }
+
+        window.showCustomAlert('Password reset email sent! Please check your inbox.', 'success');
+    });
+}
+
 
 // Newsletter signup
 const newsletterForm = document.getElementById('newsletter-form');

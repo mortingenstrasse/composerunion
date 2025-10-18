@@ -30,8 +30,14 @@ body {
     margin: 0 auto;
 }
 
-.notion-logo img {
+.notion-logo .desktop-logo {
     height: 24px; /* Smaller logo */
+    display: block;
+}
+
+.notion-logo .mobile-favicon {
+    display: none; /* Hidden by default */
+    height: 24px; /* Favicon size */
 }
 
 .notion-nav-links {
@@ -707,22 +713,52 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .notion-logo .desktop-logo {
+        display: none; /* Hide desktop logo on mobile */
+    }
+
+    .notion-logo .mobile-favicon {
+        display: block; /* Show favicon on mobile */
+        height: 24px; /* Adjust size as needed */
+        margin-right: 1rem; /* Space between favicon and nav links */
+    }
+
     .notion-navbar {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
+        flex-wrap: nowrap; /* Prevent wrapping */
+        justify-content: space-between; /* Distribute items */
+        gap: 0.5rem; /* Smaller gap */
+        padding: 0.5rem 1rem; /* Adjust padding */
     }
 
     .notion-nav-links {
         margin-left: 0;
-        width: 100%;
-        justify-content: center;
-        gap: 1rem;
+        width: auto; /* Allow links to take natural width */
+        justify-content: flex-start; /* Align links to the start */
+        gap: 0.8rem; /* Smaller gap between nav links */
+    }
+
+    .notion-nav-links a {
+        font-size: 0.85rem; /* Smaller font size for links */
+        padding: 0.3rem 0;
     }
 
     .notion-auth-buttons {
-        width: 100%;
-        justify-content: center;
+        width: auto; /* Allow buttons to take natural width */
+        justify-content: flex-end; /* Align buttons to the end */
+        gap: 0.5rem; /* Smaller gap between auth buttons */
+    }
+
+    .notion-login-signup-btn {
+        padding: 0.4rem 0.6rem; /* Smaller padding for button */
+        font-size: 0.75rem; /* Even smaller font size for button */
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+
+    .notion-blog-layout,
+    .post-layout {
+        grid-template-columns: 1fr;
+        padding: 1rem; /* Reduced padding for mobile */
+        gap: 1rem; /* Reduced gap for mobile */
     }
 
     .notion-blog-layout,

@@ -6,17 +6,22 @@
     <title>Blog - ComposerUnion</title>
     <meta name="description" content="Browse articles on music composition, production, VSTs, and industry news.">
     
+    <link rel="icon" type="image/png" href="favicon.png">
     <!-- Google AdSense Code -->
+    <!--
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
      crossorigin="anonymous"></script>
-    
+    -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <header class="notion-header">
         <nav class="notion-navbar">
             <div class="notion-logo">
-                <a href="index.html"><img src="logoBlack.png" alt="ComposerUnion Logo"></a>
+                <a href="index.html">
+                    <img src="logoBlack.png" alt="ComposerUnion Logo" class="desktop-logo">
+                    <img src="favicon.png" alt="ComposerUnion Favicon" class="mobile-favicon">
+                </a>
             </div>
             <ul class="notion-nav-links">
                 <li><a href="blog.html">Blog</a></li>
@@ -47,6 +52,7 @@
             </ul>
 
             <!-- Sidebar Ad Unit (300x600 Half Page) - Keeping for now, but will likely remove or restyle -->
+            <!--
             <div class="ad-container ad-sidebar">
                 <ins class="adsbygoogle"
                      style="display:block"
@@ -57,6 +63,7 @@
                      (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
             </div>
+            -->
         </aside>
 
         <section class="blog-posts">
