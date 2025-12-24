@@ -9,9 +9,10 @@
             --bg-color: #0a0a0a;
             --panel-bg: #141414;
             --text-color: #e0e0e0;
-            --accent-red: #ff3b3b; /* Target notes */
+            --accent-red: #ff3b3b; /* Target notes (Current) */
             --accent-green: #00e676; /* Success/Played */
             --accent-blue: #2979ff; /* UI Elements */
+            --accent-yellow: #ffeb3b; /* Next note indicator */
             --key-white: #f0f0f0;
             --key-black: #111111;
             --key-active: #00e676;
@@ -43,7 +44,7 @@
             background: var(--panel-bg);
             color: var(--text-color);
             border: 1px solid #333;
-            padding: 8px 16px; /* Slightly smaller padding */
+            padding: 8px 16px;
             font-size: 0.9rem;
             cursor: pointer;
             border-radius: 4px;
@@ -245,6 +246,7 @@
             color: #aaa;
         }
 
+        /* --- CURRENT TARGET (RED) --- */
         .key.target {
             z-index: 10;
             transform: translateY(-3px);
@@ -255,11 +257,37 @@
         .key.target.black { background: #550000 !important; }
         .key.target span { color: var(--accent-red) !important; opacity: 1; text-shadow: 0 0 2px white; }
 
+        /* --- NEXT TARGET (YELLOW DOT) --- */
+        .key.next-target::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-yellow);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-yellow);
+            z-index: 60; /* Ensure it's visible even if key is red */
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translate(-50%, 0); }
+            to { transform: translate(-50%, -3px); }
+        }
+
+        /* --- ACTIVE STATE (GREEN) --- */
         .key.active {
             transform: translateY(2px);
             background: var(--accent-green) !important;
             box-shadow: 0 0 15px var(--accent-green) !important;
             border: none !important;
+        }
+        /* Hide yellow dot when key is pressed to avoid clutter */
+        .key.active.next-target::after {
+            opacity: 0;
         }
         .key.active span { color: #003300 !important; }
 
@@ -376,7 +404,6 @@
         <div class="piano-wrapper">
             <div id="piano-container" class="piano-container"></div>
             
-            <!-- Octave Controls (Task 1) -->
             <div class="octave-controls">
                 <button class="btn" onclick="changeOctave(-1)">- Oct</button>
                 <span id="octave-label" style="display:flex; align-items:center; font-family:monospace; color:#888;">C3-B5</span>
@@ -385,18 +412,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="../js/config.js"></script>
     <script>
-        // --- AUTH CHECK ---
-        async function checkAccess() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) {
-                window.location.href = '../signup.html';
-            }
-        }
-        checkAccess();
-
         // --- DATA & STATE ---
         const STATE = {
             midiAccess: null,
@@ -414,9 +430,8 @@
             currentBeat: 0
         };
 
-        // Octave State (Task 1)
+        // Octave State
         let octaveShift = 0; 
-        // Base range: C3(48) to B5(83). Shift adds multiples of 12.
         const BASE_START_NOTE = 48;
         const BASE_END_NOTE = 83;
         const KEY_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
@@ -424,7 +439,7 @@
         const MESSAGES = ["Great job!", "Well done!", "Perfect!", "Nice!", "Smoove!", "Groovy!", "Killer!", "Solid!"];
 
         // --- PEDAGOGICAL CURRICULUM ---
-        const CURRICULUM = {
+                const CURRICULUM = {
             beginner: [
                 {
                     id: 'b1',
@@ -678,7 +693,6 @@
                 }
             ]
         };
-
         let userProgress = JSON.parse(localStorage.getItem('bluesMasterProgress')) || {};
 
         // --- MIDI SETUP ---
@@ -752,24 +766,21 @@
             document.getElementById('metronome-toggle').textContent = STATE.metronomeOn ? "Sound: ON" : "Sound: OFF";
         }
 
-        // --- PIANO VISUALIZATION & OCTAVE SHIFT (Task 1) ---
+        // --- PIANO VISUALIZATION & OCTAVE SHIFT ---
         
         function changeOctave(delta) {
             octaveShift += delta;
             renderPiano();
-            // Re-apply targets if an exercise is running
-            if (STATE.currentExercise) showCurrentTargetNote();
+            if (STATE.currentExercise) updateKeyVisuals();
         }
 
         function renderPiano() {
             const container = document.getElementById('piano-container');
             container.innerHTML = '';
             
-            // Calculate current visible range
             const startNote = BASE_START_NOTE + (octaveShift * 12);
             const endNote = BASE_END_NOTE + (octaveShift * 12);
             
-            // Update Label
             const startName = KEY_NAMES[startNote % 12] + (Math.floor(startNote / 12) - 1);
             const endName = KEY_NAMES[endNote % 12] + (Math.floor(endNote / 12) - 1);
             document.getElementById('octave-label').textContent = `${startName}-${endName}`;
@@ -793,7 +804,6 @@
                     keyDiv.className = 'key black';
                     keyDiv.style.width = (whiteKeyWidthPercent * 0.65) + '%';
                     
-                    // Position relative to white keys
                     let localWhiteCount = 0;
                     for(let k = startNote; k < i; k++) {
                         if(![1, 3, 6, 8, 10].includes(k % 12)) localWhiteCount++;
@@ -869,7 +879,7 @@
             document.getElementById('current-rep').textContent = STATE.repetition;
             
             updateProgressUI();
-            showCurrentTargetNote();
+            updateKeyVisuals();
             showScreen('screen-training');
             stopMetronome();
             startMetronome();
@@ -877,7 +887,7 @@
 
         function exitTraining() {
             stopMetronome();
-            document.querySelectorAll('.key').forEach(k => k.classList.remove('target', 'active'));
+            document.querySelectorAll('.key').forEach(k => k.classList.remove('target', 'active', 'next-target'));
             const toasts = document.querySelectorAll('.motivation-toast');
             toasts.forEach(t => t.remove());
             showScreen('screen-modules');
@@ -890,17 +900,42 @@
             document.getElementById('current-rep').textContent = STATE.repetition;
         }
 
-        function showCurrentTargetNote() {
-            document.querySelectorAll('.key').forEach(k => k.classList.remove('target'));
-            const notesToPlay = STATE.currentExercise.notes[STATE.noteIndex];
-            
-            notesToPlay.forEach(midiNote => {
-                // Only highlight if key is currently visible on screen
-                const el = document.getElementById(`key-${midiNote}`);
-                if (el) el.classList.add('target');
+        // --- VISUAL UPDATE LOGIC (Red + Yellow Dot) ---
+        function updateKeyVisuals() {
+            // Clear all classes
+            document.querySelectorAll('.key').forEach(k => {
+                k.classList.remove('target', 'next-target', 'active');
             });
 
-            const noteNames = notesToPlay.map(n => {
+            if (!STATE.currentExercise) return;
+
+            const notes = STATE.currentExercise.notes;
+            const currentNotes = notes[STATE.noteIndex];
+            const nextIndex = (STATE.noteIndex + 1) % notes.length;
+            const nextNotes = notes[nextIndex];
+
+            // Calculate visible range to avoid styling invisible keys
+            const startNote = BASE_START_NOTE + (octaveShift * 12);
+            const endNote = BASE_END_NOTE + (octaveShift * 12);
+
+            // Apply Current (Red)
+            currentNotes.forEach(midiNote => {
+                if (midiNote >= startNote && midiNote <= endNote) {
+                    const el = document.getElementById(`key-${midiNote}`);
+                    if (el) el.classList.add('target');
+                }
+            });
+
+            // Apply Next (Yellow Dot)
+            nextNotes.forEach(midiNote => {
+                if (midiNote >= startNote && midiNote <= endNote) {
+                    const el = document.getElementById(`key-${midiNote}`);
+                    if (el) el.classList.add('next-target');
+                }
+            });
+
+            // Update Text Instruction
+            const noteNames = currentNotes.map(n => {
                 const name = KEY_NAMES[n % 12];
                 const octave = Math.floor(n / 12) - 1;
                 return `${name}${octave}`;
@@ -970,7 +1005,7 @@
                     return;
                 }
             }
-            showCurrentTargetNote();
+            updateKeyVisuals();
         }
 
         function saveProgress(exId, reps) {
