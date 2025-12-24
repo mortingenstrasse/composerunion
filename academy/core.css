@@ -1,0 +1,1132 @@
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital@1&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: #37352f; /* Darker text color */
+    background-color: #f6f6f6; /* Light gray background */
+}
+
+/* Notion Header */
+.notion-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0.5rem 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.notion-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.notion-logo .desktop-logo {
+    height: 24px; /* Smaller logo */
+    display: block;
+}
+
+.notion-logo .mobile-favicon {
+    display: none; /* Hidden by default */
+    height: 24px; /* Favicon size */
+}
+
+.notion-nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+    margin-left: 2rem;
+}
+
+.notion-nav-links a {
+    color: #37352f;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.2s ease-in-out;
+    padding: 0.5rem 0;
+}
+
+.notion-nav-links a:hover {
+    color: #007bff; /* Notion blue */
+}
+
+.notion-nav-links .dropdown {
+    position: relative;
+}
+
+.notion-nav-links .dropdown .arrow-down {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #37352f;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.notion-nav-links .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+    padding: 0.5rem 0;
+}
+
+.notion-nav-links .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.notion-nav-links .dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.notion-nav-links .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.notion-auth-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.notion-login-signup-btn {
+    background-color: #007bff; /* Notion blue */
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.notion-login-signup-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Ad Container Styles */
+.ad-container {
+    margin: 2rem auto;
+    text-align: center;
+    max-width: 100%;
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.ad-header {
+    max-width: 728px;
+}
+
+.ad-sidebar {
+    margin-top: 2rem;
+    position: sticky;
+    top: 20px;
+}
+
+.ad-in-content {
+    margin: 2rem 0;
+}
+
+.ad-mid-content {
+    max-width: 336px;
+}
+
+/* Hero Image Section for index.html */
+.hero-image-section {
+    position: relative;
+    grid-column: 1 / -1; /* Span across all columns */
+    margin-bottom: 3rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    height: 400px; /* Fixed height for the hero section */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the area */
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.hero-text-overlay {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
+    border-radius: 8px;
+}
+
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.hero-description {
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+
+/* Notion Blog Layout */
+.notion-blog-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr; /* Wider sidebar */
+    gap: 4rem; /* Increased gap */
+    padding: 3rem 2rem; /* Adjusted padding */
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.notion-sidebar {
+    padding: 0; /* Remove padding, content inside will have its own */
+}
+
+.tools-craft-section {
+    margin-bottom: 2rem;
+}
+
+.tools-craft-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem; /* Larger font size */
+    line-height: 1.1;
+    color: #37352f;
+    margin-bottom: 0.5rem;
+}
+
+.and-symbol {
+    font-style: italic;
+}
+
+.tools-craft-description {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+.notion-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 1.5rem 0;
+}
+
+.notion-category-filter {
+    list-style: none;
+}
+
+.notion-category-filter li {
+    margin-bottom: 0.8rem;
+}
+
+.notion-category-filter a {
+    color: #37352f;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s ease-in-out;
+}
+
+.notion-category-filter a:hover {
+    color: #007bff;
+}
+
+/* Blog Posts Grid */
+.blog-posts h1 {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #37352f;
+}
+
+#posts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Adjusted minmax for Notion style */
+    gap: 2.5rem; /* Increased gap */
+}
+
+.notion-post-card {
+    background-color: #fff;
+    border-radius: 8px; /* More rounded corners */
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Subtle shadow */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.notion-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.notion-post-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.notion-post-image {
+    width: 100%;
+    height: 220px; /* Slightly taller images */
+    object-fit: cover;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.notion-post-content {
+    padding: 1.5rem;
+}
+
+.notion-post-category {
+    display: inline-block;
+    background-color: #e0e0e0; /* Light gray background for category */
+    color: #555;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+}
+
+.notion-post-title {
+    font-size: 1.4rem; /* Larger title */
+    margin-bottom: 0.6rem;
+    color: #37352f;
+    line-height: 1.3;
+}
+
+.notion-post-description {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+.notion-post-author {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.notion-author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #e0e0e0;
+}
+
+.author-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.notion-author-name {
+    font-weight: 600;
+    color: #37352f;
+    font-size: 0.9rem;
+}
+
+.notion-author-role {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* Academy Page Styles */
+.academy-main-content {
+    max-width: 1000px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.academy-hero {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.academy-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #37352f;
+}
+
+.academy-hero p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto 1rem auto;
+}
+
+.academy-features {
+    margin-bottom: 3rem;
+}
+
+.academy-features h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #37352f;
+    text-align: center;
+}
+
+.academy-features ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.academy-features li {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.03);
+}
+
+.academy-features li strong {
+    color: #007bff;
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.academy-coming-soon {
+    text-align: center;
+    padding: 2rem;
+    background-color: #eaf5ff; /* Light blue background */
+    border-radius: 8px;
+    border: 1px solid #cce0ff;
+}
+
+.academy-coming-soon h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: #0056b3;
+}
+
+.academy-coming-soon p {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.academy-coming-soon #waitlist-form {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.academy-coming-soon #waitlist-form input {
+    padding: 0.8rem;
+    width: 300px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.academy-coming-soon #waitlist-form button {
+    padding: 0.8rem 2rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.academy-coming-soon #waitlist-form button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .academy-main-content {
+        margin: 1.5rem auto;
+        padding: 1rem;
+    }
+
+    .academy-hero h1 {
+        font-size: 2rem;
+    }
+
+    .academy-features h2 {
+        font-size: 1.8rem;
+    }
+
+    .academy-coming-soon h2 {
+        font-size: 1.8rem;
+    }
+
+    .academy-coming-soon #waitlist-form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .academy-coming-soon #waitlist-form input {
+        width: 100%;
+    }
+}
+
+/* Single Post Layout */
+.post-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    padding: 2rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.post-content {
+    background-color: #fff;
+    padding: 2rem;
+}
+
+.post-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.post-meta {
+    color: #666;
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+#post-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+#article-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+#article-content p {
+    margin-bottom: 1.5rem;
+}
+
+#article-content h2 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Newsletter Section */
+.newsletter {
+    background-color: #f0f0f0;
+    padding: 3rem 5%;
+    text-align: center;
+}
+
+.newsletter h2 {
+    margin-bottom: 1rem;
+}
+
+#newsletter-form {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+#newsletter-form input {
+    padding: 0.8rem;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#newsletter-form button {
+    padding: 0.8rem 2rem;
+    background-color: #0066ff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Auth Pages */
+.auth-container,
+.myaccount-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem;
+}
+
+.auth-box,
+.myaccount-box {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.auth-box h2,
+.myaccount-box h2 {
+    margin-bottom: 1rem;
+}
+
+.auth-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.auth-box input,
+.auth-box textarea {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.auth-box button {
+    padding: 0.8rem;
+    background-color: #0066ff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.google-btn {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    margin-top: 1rem;
+}
+
+.myaccount-box p {
+    margin-bottom: 0.5rem;
+}
+
+.myaccount-box .account-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.myaccount-box .btn {
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.myaccount-box .btn-primary {
+    background-color: #0066ff;
+    color: #fff;
+}
+
+.myaccount-box .btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.myaccount-box .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.myaccount-box #writer-bio-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+.myaccount-box #writer-bio-section h3 {
+    margin-bottom: 1rem;
+}
+
+.myaccount-box #writer-bio-section textarea {
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 1rem;
+}
+
+.myaccount-box #submit-writer-application {
+    width: 100%;
+}
+
+/* Footer */
+footer {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 4rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .notion-logo .desktop-logo {
+        display: none; /* Hide desktop logo on mobile */
+    }
+
+    .notion-logo .mobile-favicon {
+        display: block; /* Show favicon on mobile */
+        height: 24px; /* Adjust size as needed */
+        margin-right: 1rem; /* Space between favicon and nav links */
+    }
+
+    .notion-navbar {
+        flex-wrap: nowrap; /* Prevent wrapping */
+        justify-content: space-between; /* Distribute items */
+        gap: 0.5rem; /* Smaller gap */
+        padding: 0.5rem 1rem; /* Adjust padding */
+    }
+
+    .notion-nav-links {
+        margin-left: 0;
+        width: auto; /* Allow links to take natural width */
+        justify-content: flex-start; /* Align links to the start */
+        gap: 0.8rem; /* Smaller gap between nav links */
+    }
+
+    .notion-nav-links a {
+        font-size: 0.85rem; /* Smaller font size for links */
+        padding: 0.3rem 0;
+    }
+
+    .notion-auth-buttons {
+        width: auto; /* Allow buttons to take natural width */
+        justify-content: flex-end; /* Align buttons to the end */
+        gap: 0.5rem; /* Smaller gap between auth buttons */
+    }
+
+    .notion-login-signup-btn {
+        padding: 0.4rem 0.6rem; /* Smaller padding for button */
+        font-size: 0.75rem; /* Even smaller font size for button */
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+
+    .notion-blog-layout,
+    .post-layout {
+        grid-template-columns: 1fr;
+        padding: 1rem; /* Reduced padding for mobile */
+        gap: 1rem; /* Reduced gap for mobile */
+    }
+
+    .notion-blog-layout,
+    .post-layout {
+        grid-template-columns: 1fr;
+        padding: 1rem; /* Reduced padding for mobile */
+        gap: 1rem; /* Reduced gap for mobile */
+    }
+
+    .post-content {
+        padding: 1rem; /* Reduced padding for post content on mobile */
+    }
+
+    .sidebar {
+        padding: 1rem; /* Reduced padding for sidebar on mobile */
+    }
+
+    .post-meta {
+        flex-direction: column; /* Stack meta items vertically */
+        gap: 0.5rem; /* Smaller gap between stacked items */
+    }
+
+    .ad-sidebar {
+        position: static;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero-image-section {
+        height: 250px; /* Adjust hero image section height for smaller screens */
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+    }
+
+    .tools-craft-title {
+        font-size: 2.2rem;
+    }
+}
+
+/* Custom Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content h2 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #333;
+    text-decoration: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom Alert/Toast Notification Styles */
+.custom-alert {
+    display: none; /* Hidden by default */
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 1001;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, bottom 0.5s ease-in-out;
+    align-items: center; /* Align items for flex display */
+    justify-content: space-between; /* Space between message and close button */
+    gap: 15px; /* Gap between message and close button */
+}
+
+.custom-alert.show {
+    display: flex; /* Use flex to keep it stable and show close button */
+    opacity: 1;
+    bottom: 50px;
+}
+
+.custom-alert .close-alert-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+    transition: color 0.3s ease;
+}
+
+.custom-alert .close-alert-button:hover {
+    color: #ccc;
+}
+
+.custom-alert.success {
+    background-color: #28a745; /* Green for success */
+}
+
+.custom-alert.error {
+    background-color: #dc3545; /* Red for error */
+}
+
+.custom-alert.info {
+    background-color: #007bff; /* Blue for info */
+}
+/*
+    ComposerUnion Academy Custom Styles
+    This file is created to implement the card layout for the three courses
+    without modifying the user's existing styles.css.
+*/
+
+/* --- Course Card Layout --- */
+.course-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between cards */
+    justify-content: center; /* Center the cards if there's extra space */
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.course-card {
+    flex: 1 1 300px; /* Flex-grow, flex-shrink, flex-basis. Allows 3 cards per row on wider screens. */
+    max-width: 350px;
+    padding: 25px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-card-link {
+    text-decoration: none; /* Remove underline from the link */
+    color: inherit; /* Inherit text color */
+    display: flex; /* Make the link a flex container to wrap the card */
+    flex: 1 1 300px; /* Match flex properties of course-card */
+    max-width: 350px; /* Match max-width of course-card */
+}
+
+.course-card-link:hover .course-card {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    cursor: pointer; /* Indicate that the card is clickable */
+}
+
+.course-card:hover {
+    /* This rule is now handled by .course-card-link:hover .course-card */
+}
+
+.course-card h3 {
+    font-size: 1.5em;
+    margin-top: 0;
+    color: #333;
+}
+
+.course-card .tag {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
+.course-card .free-tag {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.course-card .soon-tag {
+    background-color: #FFC107; /* Amber */
+    color: #333;
+}
+
+.course-card.featured {
+    border: 2px solid #007bff; /* Highlight the free course */
+    background-color: #f9f9ff;
+}
+
+.course-card .course-details {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #e0e0e0;
+}
+
+.course-card .course-details h4 {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.course-card .course-details ul {
+    list-style: disc;
+    margin-left: 20px;
+    padding-left: 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.course-card .btn {
+    margin-top: auto; /* Push button to the bottom */
+    text-align: center;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.course-card .primary-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.course-card .primary-btn:hover {
+    background-color: #0056b3;
+}
+
+.course-card .secondary-btn {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.course-card .secondary-btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* --- Certificate Module Styling --- */
+.academy-certificate-cta {
+    margin-top: 50px;
+    padding: 40px;
+    background-color: #f4f4f9;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.certificate-module {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.certificate-module .module-content,
+.certificate-module .module-action {
+    flex: 1 1 300px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.certificate-module h4 {
+    color: #007bff;
+    margin-top: 0;
+}
+
+.certificate-module .price-tag {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #28a745; /* Green for price */
+    margin: 10px 0;
+}
+
+.certificate-module .contact-email a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* --- Course Content Modules --- */
+.academy-course-content {
+    margin-top: 50px;
+}
+
+.content-module {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-left: 5px solid #007bff;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.content-placeholder {
+    padding: 15px;
+    background-color: #f0f8ff;
+    border: 1px dashed #007bff;
+    border-radius: 5px;
+    margin-top: 15px;
+    color: #555;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .course-cards-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .course-card {
+        max-width: 90%;
+    }
+
+    .certificate-module {
+        flex-direction: column;
+    }
+}

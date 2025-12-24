@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blues Master: Admin Tool</title>
+    <script src="https://unpkg.com/@tonejs/midi@2.0.28/build/Midi.js"></script>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --panel-bg: #141414;
+            --text-color: #e0e0e0;
+            --accent-blue: #2979ff;
+            --accent-green: #00e676;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--panel-bg);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h1 { margin-top: 0; color: var(--accent-blue); text-align: center; }
+        h2 { font-size: 1.2rem; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #aaa; font-size: 0.9rem; }
+        
+        input[type="text"], select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        
+        .file-upload-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100px;
+            border: 2px dashed #444;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #000;
+        }
+        .file-upload-wrapper:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent-blue);
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button:hover { background: #1c66e6; }
+        button.secondary { background: #333; margin-top: 10px; }
+
+        #output-area {
+            margin-top: 30px;
+            position: relative;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            border: 1px solid #333;
+            color: var(--accent-green);
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            resize: vertical;
+            border-radius: 4px;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .hidden { display: none; }
+        .error { color: var(--accent-red); font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Admin: MIDI to Code</h1>
+        
+        <div class="form-group">
+            <h2>1. Practice Details</h2>
+            <label>Practice Title</label>
+            <input type="text" id="practice-title" placeholder="e.g. My Custom Blues Progression" value="Custom MIDI Import">
+            
+            <label style="margin-top: 15px;">Level</label>
+            <select id="practice-level">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+            </select>
+
+            <label style="margin-top: 15px;">Target Repetitions</label>
+            <input type="number" id="practice-reps" value="50">
+        </div>
+
+        <div class="form-group">
+            <h2>2. Upload MIDI File</h2>
+            <div class="file-upload-wrapper">
+                <span id="file-label">Click or Drag MIDI File Here</span>
+                <input type="file" id="midi-file" accept=".mid,.midi">
+            </div>
+            <div id="file-info" style="margin-top: 10px; color: #888; font-size: 0.8rem;"></div>
+        </div>
+
+        <button onclick="generateCode()">Generate Code</button>
+        <div id="error-msg" class="error"></div>
+
+        <div id="output-area" class="hidden">
+            <h2>3. Copy Result</h2>
+            <p style="color: #888; font-size: 0.9rem;">Copy the code below and paste it into the <code>CURRICULUM</code> object in your <code>index.html</code> file.</p>
+            <textarea id="code-output" readonly></textarea>
+            <button class="secondary" onclick="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <script>
+        let parsedMidi = null;
+
+        // Handle File Selection
+        document.getElementById('midi-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('file-label').textContent = file.name;
+                document.getElementById('file-info').textContent = `Size: ${(file.size/1024).toFixed(1)} KB`;
+                
+                // Read file immediately to parse
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const arrayBuffer = e.target.result;
+                        parsedMidi = new Midi(arrayBuffer);
+                        document.getElementById('error-msg').textContent = "";
+                    } catch (err) {
+                        console.error(err);
+                        document.getElementById('error-msg').textContent = "Error parsing MIDI file. Ensure it is a valid .mid file.";
+                        parsedMidi = null;
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            }
+        });
+
+        function generateCode() {
+            const errorDiv = document.getElementById('error-msg');
+            errorDiv.textContent = "";
+
+            if (!parsedMidi) {
+                errorDiv.textContent = "Please upload a valid MIDI file first.";
+                return;
+            }
+
+            const title = document.getElementById('practice-title').value || "Untitled";
+            const level = document.getElementById('practice-level').value;
+            const reps = parseInt(document.getElementById('practice-reps').value) || 50;
+            
+            // 1. Get BPM (Try to get first tempo, default to 120)
+            let bpm = 120;
+            if (parsedMidi.header.tempos.length > 0) {
+                bpm = parsedMidi.header.tempos[0].bpm;
+            }
+
+            // 2. Extract Notes
+            // We flatten all tracks into one timeline
+            const allNotes = [];
+            parsedMidi.tracks.forEach(track => {
+                track.notes.forEach(note => {
+                    allNotes.push({
+                        midi: note.midi,
+                        time: note.time,
+                        duration: note.duration
+                    });
+                });
+            });
+
+            if (allNotes.length === 0) {
+                errorDiv.textContent = "No notes found in this MIDI file.";
+                return;
+            }
+
+            // 3. Sort by time
+            allNotes.sort((a, b) => a.time - b.time);
+
+            // 4. Group Notes into Chords/Steps
+            // Logic: If notes start within 50ms (0.05s) of each other, treat as a chord.
+            const notesArray = [];
+            let currentChord = [allNotes[0].midi];
+            let lastTime = allNotes[0].time;
+
+            for (let i = 1; i < allNotes.length; i++) {
+                const note = allNotes[i];
+                
+                // If this note is close in time to the last one, add to chord
+                if (Math.abs(note.time - lastTime) < 0.1) { // 100ms threshold
+                    // Avoid duplicate notes in chord (e.g. same note on different tracks)
+                    if (!currentChord.includes(note.midi)) {
+                        currentChord.push(note.midi);
+                    }
+                } else {
+                    // New time step, save previous chord and start new
+                    // Sort chord notes for clean code output
+                    currentChord.sort((a, b) => a - b);
+                    notesArray.push(currentChord);
+                    
+                    currentChord = [note.midi];
+                    lastTime = note.time;
+                }
+            }
+            // Push the last chord
+            currentChord.sort((a, b) => a - b);
+            notesArray.push(currentChord);
+
+            // 5. Construct the JavaScript Object String
+            // Unique ID generation
+            const id = 'custom_' + Date.now().toString().slice(-6);
+
+            // Format the notes array for readability
+            const notesString = JSON.stringify(notesArray)
+                .replace(/\],\[/g, "],\n            ["); // Add newlines for formatting
+
+            const template = `{
+    id: '${id}',
+    title: '${title}',
+    bpm: ${bpm},
+    reps: ${reps},
+    notes: ${notesString}
+}`;
+
+            // Output
+            const outputArea = document.getElementById('code-output');
+            outputArea.value = template;
+            document.getElementById('output-area').classList.remove('hidden');
+            
+            // Scroll to output
+            document.getElementById('output-area').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyToClipboard() {
+            const copyText = document.getElementById("code-output");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                const btn = document.querySelector('.secondary');
+                const originalText = btn.textContent;
+                btn.textContent = "Copied!";
+                setTimeout(() => btn.textContent = originalText, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

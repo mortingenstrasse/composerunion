@@ -3,26 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ComposerUnion Academy - Orchestral Music Courses & Production</title>
-    <meta name="description" content="ComposerUnion Academy offers future online courses and masterclasses for orchestral music composition, cinematic scoring, and music production. Join our waitlist for updates.">
+    <title>BLUES & JAZZ PIANO LESSONS - ComposerUnion Academy</title>
     <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="css/styles.css">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L9DBG7H8K"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    <link rel="stylesheet" href="css/styles.css"> <!-- Keep general styles for header/footer and fonts -->
+    <!-- Google Fonts for Inter and Playfair Display are already in styles.css -->
+    <style>
+        body {
+            background-color: #000;
+            color: #f0f0f0; /* Light gray for main text */
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
 
-      gtag('config', 'G-1L9DBG7H8K');
-    </script>
+        .notion-header {
+            background-color: #1a1a1a; /* Darker header */
+            border-bottom: 1px solid #333;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .notion-nav-links a,
+        .notion-auth-buttons a.notion-login-signup-btn {
+            color: #f0f0f0;
+        }
+
+        .notion-nav-links a:hover,
+        .notion-auth-buttons a.notion-login-signup-btn:hover {
+            color: #007bff; /* Keep Notion blue hover */
+        }
+        
+        .notion-auth-buttons a.notion-login-signup-btn {
+             background-color: #007bff; /* Maintain button style */
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-image-container {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-image {
+            width: 50%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #fff;
+        }
+
+        .text-section {
+            position: relative;
+            z-index: 2;
+        }
+
+        .text-section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .text-section p {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #c0c0c0;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content-block {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 6rem;
+            padding: 2rem;
+            
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .content-block.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .content-block .image-container {
+            flex: 1;
+            min-width: 300px; /* Ensure image doesn't get too small */
+        }
+
+        .content-block .image-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .content-block .text-container {
+            flex: 2;
+            color: #e0e0e0;
+        }
+
+        .content-block .text-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .content-block .text-container h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-block .text-container h4 {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 0.8rem;
+        }
+
+        .content-block .text-container p {
+            margin-bottom: 1rem;
+            color: #c0c0c0; /* Gray for paragraph text */
+        }
+        
+        .content-block .text-container ul {
+            list-style: disc;
+            margin-left: 20px;
+            margin-bottom: 1rem;
+            color: #c0c0c0;
+        }
+
+        .content-block .text-container ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        strong {
+            color: #fff;
+        }
+
+        .enroll-button-container {
+            text-align: center;
+            margin: 6rem 0;
+        }
+
+        .enroll-button {
+            display: inline-block;
+            background-color: #007bff; /* Notion blue */
+            color: #fff;
+            padding: 1rem 2.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        .enroll-button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+        }
+
+        footer {
+            background-color: #000; /* Ensure footer background is black */
+            color: #fff;
+            position: relative;
+            z-index: 1000;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .content-block {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .content-block.reverse {
+                flex-direction: column; /* Stacks normally on small screens */
+            }
+
+            .content-block .image-container {
+                min-width: unset;
+                margin-bottom: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .text-section h1 {
+                font-size: 2rem;
+            }
+            
+            .text-section p {
+                font-size: 1rem;
+            }
+
+            .content-block .text-container h2 {
+                font-size: 1.8rem;
+            }
+
+            .content-block .text-container h3 {
+                font-size: 1.5rem;
+            }
+
+            .content-block .text-container h4 {
+                font-size: 1.1rem;
+            }
+
+            .enroll-button {
+                font-size: 1.2rem;
+                padding: 0.8rem 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="notion-header">
         <nav class="notion-navbar">
             <div class="notion-logo">
                 <a href="index.html">
-                    <img src="logoBlack.png" alt="ComposerUnion Logo" class="desktop-logo">
+                    <img src="logoWhite.png" alt="ComposerUnion Logo" class="desktop-logo"> <!-- Use white logo on dark background -->
                     <img src="favicon.png" alt="ComposerUnion Favicon" class="mobile-favicon">
                 </a>
             </div>
@@ -36,32 +265,173 @@
         </nav>
     </header>
 
-    <main class="academy-main-content">
-        <section class="academy-hero">
-            <h1>ComposerUnion Academy: Elevate Your Orchestral Music</h1>
-            <p>Unlock your potential in orchestral music composition and production. ComposerUnion Academy is meticulously crafting a suite of online courses, masterclasses, and resources designed for aspiring and professional composers alike.</p>
-            <p>Whether you're delving into cinematic scoring, refining your orchestration techniques, or exploring advanced sound design for virtual instruments, our academy will provide the tools and knowledge you need to excel.</p>
+    <main>
+        <div class="text-section">
+            <h1>BLUES & JAZZ PIANO LESSONS</h1>
+            <div class="hero-image-container">
+                <img src="academy/heroImage.jpg" alt="Hero Image" class="hero-image">
+            </div>
+            <p>Master the Art of Piano Playing from Beginner to Advanced</p>
+        </div>
+
+        <section class="content-block">
+            <div class="image-container">
+                <img src="academy/BluesPiano1.jpg" alt="Blues Piano Lesson 1">
+            </div>
+            <div class="text-container">
+                <h2>INTRODUCTION</h2>
+                <p>Welcome to your comprehensive journey into the world of blues and jazz piano. Whether you're a complete beginner or looking to refine your skills, our structured curriculum will take you from playing your first notes to performing sophisticated jazz arrangements with confidence and style.</p>
+
+                <h2>OUR MISSION & PHILOSOPHY</h2>
+                <p>Our mission is simple yet profound: to transform your piano playing through deliberate practice and repetition. We believe that mastery comes from consistent, focused repetition of fundamental techniques combined with real-world musical application.
+                Using our innovative software-integrated learning system, you'll see exactly which notes to play on your MIDI keyboard in real-time. This visual guidance, combined with our carefully structured exercises, ensures that you develop muscle memory, timing, and musicality simultaneously. Every lesson is designed around the principle that practice makes permanent, so we emphasize quality repetition that builds lasting skills.
+                We're not just teaching you to play piano – we're introducing you to the rich tradition of Western music's most expressive genres: blues and jazz. These styles offer endless opportunities for creativity, improvisation, and personal expression while grounding you in essential musical theory and technique.</p>
+
+                <h2>COURSE OBJECTIVES & GOALS</h2>
+                <p>By the end of this comprehensive program, you will:</p>
+                <ul>
+                    <li><strong>Technical Mastery:</strong> Develop solid technique in both hands, including scales, chords, arpeggios, and the distinctive left-hand walking bass patterns essential to blues and jazz.</li>
+                    <li><strong>Musical Literacy:</strong> Read and understand musical notation, chord symbols, and lead sheets used in professional jazz and blues performance.</li>
+                    <li><strong>Improvisation Skills:</strong> Learn to improvise melodically and harmonically over blues progressions and jazz standards with confidence.</li>
+                    <li><strong>Repertoire Building:</strong> Build an impressive playlist of classic blues tunes, jazz standards, and contemporary pieces that showcase your abilities.</li>
+                    <li><strong>Ear Training:</strong> Develop your musical ear to recognize chord progressions, intervals, and melodic patterns by sound.</li>
+                    <li><strong>Personal Style:</strong> Find your unique voice within the blues and jazz traditions, learning from the masters while developing your own approach.</li>
+                </ul>
+            </div>
         </section>
 
-        <section class="academy-features">
-            <h2>What to Expect from Our Future Online Courses:</h2>
-            <ul>
-                <li><strong>Comprehensive Modules:</strong> From foundational theory to advanced compositional techniques.</li>
-                <li><strong>Expert-Led Masterclasses:</strong> Learn from seasoned professionals in the orchestral music industry.</li>
-                <li><strong>Practical Production Skills:</strong> Master mixing, mastering, and implementing virtual instruments.</li>
-                <li><strong>Community & Feedback:</strong> Engage with a vibrant community and receive constructive criticism.</li>
-                <li><strong>Flexible Learning:</strong> Access courses anytime, anywhere, at your own pace.</li>
-            </ul>
+        <section class="content-block reverse">
+            <div class="image-container">
+                <img src="academy/BluesPiano2.jpg" alt="Blues Piano Lesson 2">
+            </div>
+            <div class="text-container">
+                <h2>THE BLUES & JAZZ TRADITION</h2>
+                <p>Blues and jazz piano represent some of the most influential music in history. Born in the late 19th and early 20th centuries, these genres revolutionized Western music and continue to influence virtually every popular style today.</p>
+
+                <h3>The New Orleans Legacy</h3>
+                <p>New Orleans, the birthplace of jazz, gave the world a unique musical language that combined African rhythms, European harmony, and Caribbean influences. The city's legendary piano players – from Jelly Roll Morton to Professor Longhair – created a distinctive style characterized by rolling left-hand patterns, syncopated rhythms, and joyful improvisation.
+                The New Orleans piano tradition emphasizes the groove – that infectious rhythmic feel that makes people want to move. This same spirit infuses our teaching approach, ensuring that you don't just learn notes, but learn to make music that swings, grooves, and communicates emotion.</p>
+
+                <h3>The Masters Who Shaped the Genre</h3>
+                <p>Our curriculum draws inspiration from the greatest jazz and blues pianists in history. You'll learn techniques pioneered by legends like Thelonious Monk, whose angular melodies and distinctive chord voicings redefined jazz harmony; Oscar Peterson, whose virtuosic technique and swinging style set the standard for modern jazz piano; Bill Evans, who brought impressionistic harmony and introspective beauty to jazz; and Art Tatum, whose incredible technical facility and harmonic sophistication remain unmatched.
+                Blues piano masters like Otis Spann, Pinetop Perkins, and Memphis Slim will guide our exploration of authentic blues styles, teaching you the raw, emotional power of the 12-bar blues and the art of playing with soul and conviction.</p>
+            </div>
         </section>
 
-        <section class="academy-coming-soon">
-            <h2>Academy Opening Soon!</h2>
-            <p>We are diligently working to bring you an unparalleled learning experience. Our online courses are currently under development and will be launching in the near future. Stay tuned for updates!</p>
-            <form id="waitlist-form">
-                <input type="email" id="waitlist-email" placeholder="Join our waitlist for early access & updates" required>
-                <button type="submit">Notify Me</button>
-            </form>
+        <section class="content-block">
+            <div class="image-container">
+                <img src="academy/BluesPiano3.jpg" alt="Blues Piano Lesson 3">
+            </div>
+            <div class="text-container">
+                <h2>INTERACTIVE MIDI KEYBOARD LEARNING</h2>
+                <p>Please ensure your MIDI keyboard is connected to your computer and powered on before starting each lesson.
+                Our proprietary software will display the exact notes you need to play in real-time, allowing you to see, hear, and practice simultaneously. This multi-sensory approach accelerates learning and ensures accuracy from day one.</p>
+
+                <h2>COMPLETE COURSE CURRICULUM</h2>
+                <p>Our program is structured into three progressive levels, each building upon the previous foundation. Content is continuously updated with new songs, exercises, and techniques to keep your learning fresh and engaging.</p>
+
+                <h3>BEGINNER LEVEL: FOUNDATION BUILDING</h3>
+                <p><strong>Duration:</strong> Weeks 1-12 | <strong>Focus:</strong> Essential Skills & Blues Basics</p>
+                <p>If you're new to piano or returning after years away, this is where your journey begins. We'll start from the absolute basics and build a rock-solid foundation.</p>
+                <h4>What You'll Learn:</h4>
+                <ul>
+                    <li><strong>Piano Fundamentals:</strong> Proper posture, hand position, finger numbering, and keyboard geography</li>
+                    <li><strong>Note Reading:</strong> Treble and bass clef notation, rhythm values, time signatures</li>
+                    <li><strong>Major and Minor Scales:</strong> All 12 major scales and their relative minors, with proper fingering</li>
+                    <li><strong>Basic Chords:</strong> Triads (major, minor, diminished, augmented) in root position</li>
+                    <li><strong>The 12-Bar Blues:</strong> Understanding and playing the fundamental blues progression in multiple keys</li>
+                    <li><strong>Blues Scale:</strong> Learning the blues scale and using it for simple improvisation</li>
+                    <li><strong>Simple Left-Hand Patterns:</strong> Root-fifth patterns, octave patterns, and basic walking bass lines</li>
+                    <li><strong>Rhythm & Timing:</strong> Playing with a metronome, understanding swing feel, and basic syncopation</li>
+                    <li><strong>First Songs:</strong> Classic blues tunes like "C Jam Blues," "Blue Monk," and simple boogie-woogie patterns</li>
+                </ul>
+                <p><strong>Practice Philosophy:</strong> At this level, repetition is everything. You'll practice each scale, chord, and pattern dozens of times until it becomes automatic. Our software will guide you through each repetition, ensuring perfect accuracy.</p>
+            </div>
         </section>
+
+        <section class="content-block reverse">
+            <div class="image-container">
+                <img src="academy/BluesPiano4.jpg" alt="Blues Piano Lesson 4">
+            </div>
+            <div class="text-container">
+                <h3>INTERMEDIATE LEVEL: EXPANDING YOUR VOCABULARY</h3>
+                <p><strong>Duration:</strong> Weeks 13-32 | <strong>Focus:</strong> Jazz Harmony & Advanced Blues</p>
+                <p>With your foundation secure, we now expand your harmonic vocabulary and introduce authentic jazz and blues techniques used by professional musicians.</p>
+                <h4>What You'll Learn:</h4>
+                <ul>
+                    <li><strong>Seventh Chords:</strong> Dominant 7th, major 7th, minor 7th, half-diminished, and diminished 7th chords</li>
+                    <li><strong>Chord Inversions:</strong> Playing chords in all inversions for smoother voice leading</li>
+                    <li><strong>Extended Chords:</strong> Introduction to 9th, 11th, and 13th chords</li>
+                    <li><strong>Walking Bass Lines:</strong> Creating authentic swinging bass lines that move through chord changes</li>
+                    <li><strong>Stride Piano:</strong> The left-hand technique that defined early jazz piano</li>
+                    <li><strong>Blues Variations:</strong> Minor blues, jazz blues, and contemporary blues forms</li>
+                    <li><strong>Comping Patterns:</strong> Rhythmic chord accompaniment patterns used in jazz</li>
+                    <li><strong>II-V-I Progressions:</strong> The most important progression in jazz, in all keys</li>
+                    <li><strong>Modal Playing:</strong> Understanding and using church modes (Dorian, Mixolydian, etc.)</li>
+                    <li><strong>Intermediate Repertoire:</strong> Jazz standards like "Autumn Leaves," "Blue Bossa," classic blues tunes, and more complex arrangements</li>
+                    <li><strong>Basic Improvisation:</strong> Soloing over blues and simple jazz progressions using scales and chord tones</li>
+                </ul>
+                <p><strong>Practice Philosophy:</strong> Now we focus on musical expression alongside technical precision. You'll learn to play with dynamics, phrasing, and swing feel while continuing to drill the fundamentals through varied repetition.</p>
+
+                <h3>ADVANCED LEVEL: PROFESSIONAL ARTISTRY</h3>
+                <p><strong>Duration:</strong> Weeks 33+ | <strong>Focus:</strong> Mastery & Personal Voice</p>
+                <p>At this level, you're ready to explore the full depth of jazz harmony, advanced improvisation, and sophisticated repertoire. This is where you develop your unique artistic voice.</p>
+                <h4>What You'll Learn:</h4>
+                <ul>
+                    <li><strong>Advanced Jazz Voicings:</strong> Rootless voicings, upper structure triads, quartal harmony, cluster chords</li>
+                    <li><strong>Reharmonization:</strong> Substituting and altering chord progressions for richer harmonic color</li>
+                    <li><strong>Complex Rhythms:</strong> Polyrhythms, odd time signatures, and rhythmic displacement</li>
+                    <li><strong>Advanced Walking Bass:</strong> Chromatic approaches, scalar connections, and harmonic anticipation</li>
+                    <li><strong>Modern Jazz Concepts:</strong> Contemporary harmony used by current jazz artists</li>
+                    <li><strong>Advanced Improvisation:</strong> Melodic development, motivic improvisation, playing outside, and advanced scale choices</li>
+                    <li><strong>Arrangement Skills:</strong> Creating your own arrangements of standards and original compositions</li>
+                    <li><strong>Style Studies:</strong> Deep dives into the styles of specific pianists and eras</li>
+                    <li><strong>Advanced Repertoire:</strong> Complex jazz standards, bebop tunes, modal jazz, and contemporary compositions</li>
+                    <li><strong>Performance Skills:</strong> Playing with confidence, stage presence, and communicating with other musicians</li>
+                </ul>
+                <p><strong>Practice Philosophy:</strong> Advanced practice focuses on refinement, creativity, and artistic interpretation. You'll learn to practice like a professional – with specific goals, analytical listening, and creative exploration of the material.</p>
+            </div>
+        </section>
+
+        <section class="content-block">
+            <div class="text-container">
+                <h2>THE POWER OF REPETITION & STRUCTURED PRACTICE</h2>
+                <p>There's an old joke among musicians: "How do you get to Carnegie Hall? Practice, practice, practice!" While it may be a cliché, it contains an essential truth. The difference between good pianists and great pianists isn't talent – it's the quality and quantity of their practice.
+                Our program is built on the principle of intelligent repetition. This means:</p>
+                <ul>
+                    <li><strong>Focused Practice Sessions:</strong> Each lesson includes specific exercises designed to be repeated until they become second nature</li>
+                    <li><strong>Progressive Difficulty:</strong> We gradually increase complexity, ensuring you're always challenged but never overwhelmed</li>
+                    <li><strong>Visual Feedback:</strong> Our software shows you exactly what to play, eliminating guesswork and building confidence</li>
+                    <li><strong>Measurable Progress:</strong> Track your improvement through recorded practice sessions and periodic assessments</li>
+                    <li><strong>Varied Repetition:</strong> Practice the same concept in different keys, tempos, and musical contexts to ensure deep understanding</li>
+                </ul>
+                <p>Remember: Practice doesn't make perfect – perfect practice makes perfect. By following our structured approach and committing to regular, focused practice sessions, you'll develop skills that last a lifetime.</p>
+
+                <h2>CONTINUOUS CONTENT UPDATES</h2>
+                <p>Music is a living, evolving art form, and our course reflects that reality. We continuously add:</p>
+                <ul>
+                    <li><strong>New Songs & Arrangements:</strong> Fresh material added monthly, spanning classic standards to contemporary pieces</li>
+                    <li><strong>Technique Tutorials:</strong> Video breakdowns of specific techniques requested by students</li>
+                    <li><strong>Style Spotlights:</strong> Deep dives into specific subgenres like ragtime, bebop, funk blues, and more</li>
+                    <li><strong>Guest Lessons:</strong> Contributions from professional jazz and blues pianists</li>
+                    <li><strong>Performance Recordings:</strong> Examples of pieces played at different skill levels so you can hear your progression</li>
+                    <li><strong>Practice Tools:</strong> New play-along tracks, backing tracks, and practice exercises</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="enroll-button-container">
+            <a href="#" class="enroll-button" id="enroll-button">Enroll and Start Training</a>
+        </div>
+
+        <section class="content-block">
+            <div class="text-container">
+                <h2>START YOUR PIANO JOURNEY TODAY</h2>
+                <p>From your first scale to your final performance, we'll be with you every step of the way. Join thousands of students who have transformed their piano playing through our comprehensive, practice-focused approach.
+                Remember: Follow the program diligently, practice consistently, and by the end, you'll have an impressive playlist of blues and jazz pieces that showcase your newfound skills.</p>
+            </div>
+        </section>
+
     </main>
 
     <footer>
@@ -71,7 +441,7 @@
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
 
-    <!-- Custom Modal Structure -->
+    <!-- Custom Modal Structure (Keep if needed, otherwise remove) -->
     <div id="custom-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -80,9 +450,23 @@
         </div>
     </div>
 
-    <!-- Custom Alert/Toast Notification -->
+    <!-- Custom Alert/Toast Notification (Keep if needed, otherwise remove) -->
     <div id="custom-alert" class="custom-alert"></div>
     
-    <script src="js/ui.js"></script> <!-- Include custom UI script AFTER modal and alert HTML -->
+    <script src="js/ui.js"></script>
+    <script>
+        document.getElementById('enroll-button').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) {
+                window.location.href = 'academy/pianoLearn.html';
+            } else {
+                window.showCustomAlert('Please log in to access the training.', 'info');
+                setTimeout(() => {
+                    window.location.href = 'signup.html';
+                }, 2000);
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Blues Master: Interactive MIDI Trainer</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --panel-bg: #141414;
+            --text-color: #e0e0e0;
+            --accent-red: #ff3b3b; /* Target notes */
+            --accent-green: #00e676; /* Success/Played */
+            --accent-blue: #2979ff; /* UI Elements */
+            --key-white: #f0f0f0;
+            --key-black: #111111;
+            --key-active: #00e676;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- UI UTILITIES --- */
+        .hidden { display: none !important; }
+        .btn {
+            background: var(--panel-bg);
+            color: var(--text-color);
+            border: 1px solid #333;
+            padding: 8px 16px; /* Slightly smaller padding */
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        .btn:active { transform: scale(0.95); }
+        .btn-primary { background: var(--accent-blue); border-color: var(--accent-blue); color: white; }
+        
+        h1, h2, h3 { margin: 0 0 10px 0; font-weight: 300; letter-spacing: 1px; }
+        
+        /* --- LAYOUT --- */
+        .screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .screen.active {
+            pointer-events: auto;
+        }
+
+        /* --- SCREEN: CONNECT --- */
+        #screen-connect { text-align: center; }
+        .midi-status { font-size: 1.2rem; margin-bottom: 20px; color: #888; }
+        .midi-status.active { color: var(--accent-green); }
+
+        /* --- SCREEN: LEVELS --- */
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .level-card {
+            background: var(--panel-bg);
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .level-card:hover { border-color: var(--accent-blue); background: #1f1f1f; }
+
+        /* --- SCREEN: MODULES --- */
+        .module-list {
+            width: 100%;
+            max-width: 800px;
+            overflow-y: auto;
+            flex: 1;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            border-radius: 4px;
+        }
+        .module-item {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: var(--panel-bg);
+        }
+        .module-item:last-child { border-bottom: none; }
+        .module-item:hover { background: #222; }
+        .module-item.completed { border-left: 4px solid var(--accent-green); }
+        .module-info h4 { margin: 0; color: var(--accent-blue); }
+        .module-info p { margin: 5px 0 0; font-size: 0.85rem; color: #888; }
+
+        /* --- SCREEN: TRAINING --- */
+        #training-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            z-index: 10;
+        }
+        .stats-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: var(--accent-blue);
+            margin-bottom: 5px;
+            background: #111;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-green);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .piano-wrapper {
+            width: 100%;
+            height: 45vh;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .piano-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #050505;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+        
+        /* Octave Controls */
+        .octave-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 50;
+            background: rgba(0,0,0,0.8);
+            padding: 5px 10px;
+            border-radius: 20px;
+            border: 1px solid #444;
+        }
+        
+        /* --- PIANO KEYS --- */
+        .key {
+            position: absolute;
+            border-radius: 0 0 4px 4px;
+            cursor: pointer;
+            transition: background 0.05s, transform 0.05s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            z-index: 1;
+        }
+
+        .key span {
+            pointer-events: none;
+            font-family: monospace;
+            font-weight: bold;
+            opacity: 0.6;
+        }
+
+        .key.white {
+            background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+            border: 1px solid #999;
+            border-top: none;
+            height: 100%;
+            bottom: 0;
+            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.1);
+        }
+        .key.white span {
+            align-self: flex-end;
+            margin-bottom: 8px;
+            font-size: 10px;
+            color: #555;
+        }
+
+        .key.black {
+            background: linear-gradient(to bottom, #333 0%, #000 100%);
+            height: 65%;
+            bottom: 35%;
+            z-index: 2;
+            border: 1px solid #000;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.2);
+        }
+        .key.black span {
+            align-self: flex-start;
+            margin-top: 5px;
+            font-size: 8px;
+            color: #aaa;
+        }
+
+        .key.target {
+            z-index: 10;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px 2px var(--accent-red) !important;
+            border: 2px solid var(--accent-red) !important;
+        }
+        .key.target.white { background: #ffebeb !important; }
+        .key.target.black { background: #550000 !important; }
+        .key.target span { color: var(--accent-red) !important; opacity: 1; text-shadow: 0 0 2px white; }
+
+        .key.active {
+            transform: translateY(2px);
+            background: var(--accent-green) !important;
+            box-shadow: 0 0 15px var(--accent-green) !important;
+            border: none !important;
+        }
+        .key.active span { color: #003300 !important; }
+
+        .metronome-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: #333;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .motivation-toast {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: rgba(0, 230, 118, 0.9);
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 200;
+            opacity: 0;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+            animation: popFade 0.8s ease-out forwards;
+        }
+
+        @keyframes popFade {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            40% { transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -80%) scale(1); }
+        }
+
+        @media (orientation: landscape) and (max-height: 500px) {
+            .piano-wrapper { height: 55vh; }
+            #training-header h2 { font-size: 1rem; }
+            .stats-bar { padding: 5px; font-size: 1rem; }
+            .octave-controls { bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. CONNECTION SCREEN -->
+    <div id="screen-connect" class="screen active">
+        <h1>Blues Master</h1>
+        <div id="midi-status" class="midi-status">Waiting for MIDI device...</div>
+        <p style="color: #666; font-size: 0.9rem; max-width: 400px; margin-bottom: 30px;">
+            Please connect your MIDI keyboard and ensure it is powered on. 
+            Click the button below to enable browser access.
+        </p>
+        <button class="btn btn-primary" onclick="initMIDI()">Connect MIDI</button>
+    </div>
+
+    <!-- 2. LEVEL SELECTION -->
+    <div id="screen-levels" class="screen hidden">
+        <h2>Select Curriculum</h2>
+        <div class="level-grid">
+            <div class="level-card" onclick="selectLevel('beginner')">
+                <h3>Beginner</h3>
+                <p>Scales, Basic Chords</p>
+            </div>
+            <div class="level-card" onclick="selectLevel('intermediate')">
+                <h3>Intermediate</h3>
+                <p>Progressions, Walking Bass</p>
+            </div>
+            <div class="level-card" onclick="selectLevel('advanced')">
+                <h3>Advanced</h3>
+                <p>Voicings, High Rep Endurance</p>
+            </div>
+        </div>
+        <div style="margin-top: 20px;">
+            <button class="btn" onclick="showScreen('screen-modules')">My Modules (All)</button>
+        </div>
+    </div>
+
+    <!-- 3. MODULES LIST -->
+    <div id="screen-modules" class="screen hidden">
+        <div id="training-header">
+            <button class="btn" onclick="showScreen('screen-levels')">Back</button>
+            <h2>Modules</h2>
+            <div style="width: 80px;"></div>
+        </div>
+        <div id="module-list-container" class="module-list"></div>
+    </div>
+
+    <!-- 4. TRAINING INTERFACE -->
+    <div id="screen-training" class="screen hidden">
+        <button id="metronome-toggle" class="metronome-btn" onclick="toggleMetronome()">Sound: ON</button>
+        
+        <div id="training-header">
+            <button class="btn" onclick="exitTraining()">Exit</button>
+            <h2 id="exercise-title">Exercise Title</h2>
+            <div id="tempo-display" style="font-family: monospace; color: var(--accent-red);">120 BPM</div>
+        </div>
+
+        <div class="stats-bar">
+            <span>Reps: <span id="current-rep">0</span> / <span id="target-rep">100</span></span>
+            <span id="note-instruction">Play: C4</span>
+        </div>
+
+        <div class="progress-container">
+            <div id="progress-fill" class="progress-fill"></div>
+        </div>
+
+        <div class="piano-wrapper">
+            <div id="piano-container" class="piano-container"></div>
+            
+            <!-- Octave Controls (Task 1) -->
+            <div class="octave-controls">
+                <button class="btn" onclick="changeOctave(-1)">- Oct</button>
+                <span id="octave-label" style="display:flex; align-items:center; font-family:monospace; color:#888;">C3-B5</span>
+                <button class="btn" onclick="changeOctave(1)">+ Oct</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script>
+        // --- AUTH CHECK ---
+        async function checkAccess() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) {
+                window.location.href = '../signup.html';
+            }
+        }
+        checkAccess();
+
+        // --- DATA & STATE ---
+        const STATE = {
+            midiAccess: null,
+            currentScreen: 'screen-connect',
+            selectedLevel: null,
+            currentExercise: null,
+            noteIndex: 0,
+            repetition: 0,
+            metronomeOn: true,
+            audioContext: null,
+            nextNoteTime: 0,
+            timerID: null,
+            lookahead: 25.0,
+            scheduleAheadTime: 0.1,
+            currentBeat: 0
+        };
+
+        // Octave State (Task 1)
+        let octaveShift = 0; 
+        // Base range: C3(48) to B5(83). Shift adds multiples of 12.
+        const BASE_START_NOTE = 48;
+        const BASE_END_NOTE = 83;
+        const KEY_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+
+        const MESSAGES = ["Great job!", "Well done!", "Perfect!", "Nice!", "Smoove!", "Groovy!", "Killer!", "Solid!"];
+
+        // --- PEDAGOGICAL CURRICULUM ---
+        const CURRICULUM = {
+            beginner: [
+                {
+                    id: 'b1',
+                    title: 'C Blues Scale (Asc)',
+                    bpm: 80,
+                    reps: 20,
+                    notes: [[48], [51], [53], [54], [55], [58], [60], [72]] 
+                },
+                {
+                    id: 'b2',
+                    title: 'C Blues Scale (Desc)',
+                    bpm: 80,
+                    reps: 20,
+                    notes: [[60], [58], [55], [54], [53], [51], [48]]
+                },
+                {
+                    id: 'b3',
+                    title: 'Power Chords (Left Hand)',
+                    bpm: 100,
+                    reps: 30,
+                    notes: [[36, 48], [41, 53], [43, 55]]
+                },
+                {
+                    id: 'b4',
+                    title: 'Dom 7th Shell Voicings',
+                    bpm: 90,
+                    reps: 25,
+                    notes: [[36, 47], [41, 52], [43, 54]]
+                },
+                
+            ],
+            intermediate: [
+                {
+                    id: 'i1',
+                    title: '12 Bar Roots Pattern',
+                    bpm: 110,
+                    reps: 10,
+                    notes: [
+                        [36], [36], [36], [36],
+                        [41], [41], [36], [36],
+                        [43], [41], [36], [43]
+                    ]
+                },
+                {
+                    id: 'custom_024988',
+                    title: '12 Bar Blues',
+                    bpm: 120,
+                    reps: 200,
+                    notes: [[36],
+                            [60,64,67,70],
+                            [40],
+                            [43,60,64,67,70],
+                            [45],
+                            [46],
+                            [45],
+                            [43],
+                            [40],
+                            [36],
+                            [60,64,67,70],
+                            [40],
+                            [43,60,64,67,70],
+                            [45],
+                            [46],
+                            [45],
+                            [43],
+                            [40],
+                            [41],
+                            [60,63,65,69],
+                            [45],
+                            [48,60,63,65,69],
+                            [50],
+                            [51],
+                            [50],
+                            [48],
+                            [45],
+                            [36],
+                            [60,64,67,70],
+                            [40],
+                            [43,60,64,67,70],
+                            [45],
+                            [46],
+                            [45],
+                            [43],
+                            [40],
+                            [43],
+                            [62,65,67,71],
+                            [47],
+                            [50,62,65,67,71],
+                            [52],
+                            [41],
+                            [60,63,65],
+                            [45],
+                            [48,60,63,65,69],
+                            [50],
+                            [36],
+                            [60,64,67,70],
+                            [40],
+                            [43,60,64,67,70],
+                            [45],
+                            [46],
+                            [45],
+                            [43],
+                            [40]]
+                },
+                {
+                id: 'custom_107361',
+                title: '12 Bar Blues Chords',
+                bpm: 72.00002880001152,
+                reps: 100,
+                notes: [[48,52,55,58],
+                        [36],
+                        [36],
+                        [48,52,55,58],
+                        [36],
+                        [48,52,55,58],
+                        [36],
+                        [36],
+                        [36],
+                        [38],
+                        [40],
+                        [41],
+                        [48,51,53,57],
+                        [41],
+                        [41],
+                        [48,51,53,57],
+                        [41],
+                        [41],
+                        [48,51,53,57],
+                        [41],
+                        [41],
+                        [41],
+                        [40],
+                        [38],
+                        [36],
+                        [48],
+                        [52,55,58],
+                        [36],
+                        [36],
+                        [52,55,58],
+                        [36],
+                        [36],
+                        [48,52,55,58],
+                        [36],
+                        [36],
+                        [36],
+                        [38],
+                        [40],
+                        [41],
+                        [48,51,53,57],
+                        [41],
+                        [41],
+                        [48,51,53,57],
+                        [41],
+                        [41],
+                        [48,51,53,57],
+                        [41],
+                        [41],
+                        [41],
+                        [41],
+                        [41],
+                        [43],
+                        [50,53,55,57,59],
+                        [43],
+                        [43],
+                        [50,52,53,57,59],
+                        [41],
+                        [41],
+                        [47,48,50,51,53,57],
+                        [41],
+                        [41],
+                        [41],
+                        [40],
+                        [38],
+                        [36],
+                        [48,52,55,58],
+                        [36],
+                        [36],
+                        [48,52,55,58],
+                        [36],
+                        [36],
+                        [48,52,55,58],
+                        [36,38,40],
+                        [43,46]]
+            },
+            {
+                id: 'custom_156803',
+                title: 'Unchain My Hearth Chords',
+                bpm: 109.99990833340972,
+                reps: 200,
+                notes: [[45,57,67,69,72,76],
+                        [45,57,67,69,72,76],
+                        [50,62,69,72,74],
+                        [77],
+                        [50,62,69,72,74,77],
+                        [45,57,67,69,72,76],
+                        [45,57,67,69,72,76],
+                        [50,62,69,71,74],
+                        [77],
+                        [50,62,69,71,74,77],
+                        [69],
+                        [45,57,67,72,76],
+                        [53,65,72,75,77,81],
+                        [65,72,75,77,81],
+                        [52],
+                        [52,64,68,71,74],
+                        [76,78],
+                        [52,64,68,71,74,76,78],
+                        [45,57,67,69,72,76]]
+            },
+                {
+                    id: 'i2',
+                    title: 'Walking Bass 1-2-3-5',
+                    bpm: 120,
+                    reps: 20,
+                    notes: [[36], [37], [38], [43], [41], [42], [43], [48]]
+                },
+                {
+                    id: 'i3',
+                    title: 'Triad Inversions (Right)',
+                    bpm: 100,
+                    reps: 40,
+                    notes: [[60, 64, 67], [64, 67, 72], [67, 72, 76]]
+                }
+            ],
+            advanced: [
+                {
+                    id: 'a1',
+                    title: 'Turnaround (I-VI-ii-V)',
+                    bpm: 140,
+                    reps: 50,
+                    notes: [
+                        [48, 59, 64],
+                        [41, 53, 59, 62],
+                        [50, 53, 59],
+                        [43, 47, 50, 59]
+                    ]
+                },
+                {
+                    id: 'a2',
+                    title: 'Chromatic Approach',
+                    bpm: 160,
+                    reps: 500,
+                    notes: [[60], [61], [62], [63], [64], [65], [66], [67], [68]]
+                },
+                {
+                    id: 'a3',
+                    title: 'Interval Transitions (Endurance)',
+                    bpm: 140,
+                    reps: 1000,
+                    notes: [[48, 64], [53, 69], [55, 71]]
+                }
+            ]
+        };
+
+        let userProgress = JSON.parse(localStorage.getItem('bluesMasterProgress')) || {};
+
+        // --- MIDI SETUP ---
+        async function initMIDI() {
+            const statusDiv = document.getElementById('midi-status');
+            try {
+                STATE.midiAccess = await navigator.requestMIDIAccess();
+                statusDiv.textContent = "MIDI Connected!";
+                statusDiv.classList.add('active');
+                
+                const inputs = STATE.midiAccess.inputs.values();
+                for (let input of inputs) {
+                    input.onmidimessage = handleMIDIMessage;
+                }
+                setTimeout(() => showScreen('screen-levels'), 1000);
+            } catch (err) { statusDiv.textContent = "Error: " + err.message; }
+        }
+
+        function handleMIDIMessage(message) {
+            const command = message.data[0];
+            const note = message.data[1];
+            const velocity = (message.data.length > 2) ? message.data[2] : 0;
+            if (command === 144 && velocity > 0) onNoteOn(note);
+            else if (command === 128 || (command === 144 && velocity === 0)) onNoteOff(note);
+        }
+
+        // --- AUDIO ENGINE ---
+        function initAudio() {
+            if (!STATE.audioContext) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                STATE.audioContext = new AudioContext();
+            }
+            if (STATE.audioContext.state === 'suspended') STATE.audioContext.resume();
+        }
+
+        function playClick() {
+            if (!STATE.metronomeOn) return;
+            const osc = STATE.audioContext.createOscillator();
+            const gain = STATE.audioContext.createGain();
+            osc.connect(gain);
+            gain.connect(STATE.audioContext.destination);
+            osc.frequency.value = (STATE.currentBeat === 0) ? 1000 : 800;
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.00001, STATE.audioContext.currentTime + 0.05);
+            osc.stop(STATE.audioContext.currentTime + 0.05);
+        }
+
+        function scheduler() {
+            while (STATE.nextNoteTime < STATE.audioContext.currentTime + STATE.scheduleAheadTime) {
+                playClick();
+                const secondsPerBeat = 60.0 / STATE.currentExercise.bpm;
+                STATE.nextNoteTime += secondsPerBeat;
+                STATE.currentBeat = (STATE.currentBeat + 1) % 4;
+            }
+            STATE.timerID = requestAnimationFrame(scheduler);
+        }
+
+        function startMetronome() {
+            initAudio();
+            STATE.currentBeat = 0;
+            STATE.nextNoteTime = STATE.audioContext.currentTime;
+            scheduler();
+        }
+
+        function stopMetronome() {
+            if (STATE.timerID) cancelAnimationFrame(STATE.timerID);
+        }
+
+        function toggleMetronome() {
+            STATE.metronomeOn = !STATE.metronomeOn;
+            document.getElementById('metronome-toggle').textContent = STATE.metronomeOn ? "Sound: ON" : "Sound: OFF";
+        }
+
+        // --- PIANO VISUALIZATION & OCTAVE SHIFT (Task 1) ---
+        
+        function changeOctave(delta) {
+            octaveShift += delta;
+            renderPiano();
+            // Re-apply targets if an exercise is running
+            if (STATE.currentExercise) showCurrentTargetNote();
+        }
+
+        function renderPiano() {
+            const container = document.getElementById('piano-container');
+            container.innerHTML = '';
+            
+            // Calculate current visible range
+            const startNote = BASE_START_NOTE + (octaveShift * 12);
+            const endNote = BASE_END_NOTE + (octaveShift * 12);
+            
+            // Update Label
+            const startName = KEY_NAMES[startNote % 12] + (Math.floor(startNote / 12) - 1);
+            const endName = KEY_NAMES[endNote % 12] + (Math.floor(endNote / 12) - 1);
+            document.getElementById('octave-label').textContent = `${startName}-${endName}`;
+
+            const whiteKeyWidthPercent = 100 / 21;
+            let whiteKeyIndex = 0;
+
+            for (let i = startNote; i <= endNote; i++) {
+                const isBlack = [1, 3, 6, 8, 10].includes(i % 12);
+                const keyDiv = document.createElement('div');
+                keyDiv.id = `key-${i}`;
+                keyDiv.dataset.note = i;
+                
+                const nameIndex = i % 12;
+                const octave = Math.floor(i / 12) - 1;
+                const label = document.createElement('span');
+                label.textContent = KEY_NAMES[nameIndex] + octave;
+                keyDiv.appendChild(label);
+                
+                if (isBlack) {
+                    keyDiv.className = 'key black';
+                    keyDiv.style.width = (whiteKeyWidthPercent * 0.65) + '%';
+                    
+                    // Position relative to white keys
+                    let localWhiteCount = 0;
+                    for(let k = startNote; k < i; k++) {
+                        if(![1, 3, 6, 8, 10].includes(k % 12)) localWhiteCount++;
+                    }
+                    keyDiv.style.left = (localWhiteCount * whiteKeyWidthPercent) - (whiteKeyWidthPercent * 0.325) + '%';
+
+                } else {
+                    keyDiv.className = 'key white';
+                    keyDiv.style.width = whiteKeyWidthPercent + '%';
+                    keyDiv.style.left = (whiteKeyIndex * whiteKeyWidthPercent) + '%';
+                    whiteKeyIndex++;
+                }
+
+                keyDiv.addEventListener('mousedown', () => onNoteOn(i));
+                keyDiv.addEventListener('mouseup', () => onNoteOff(i));
+                keyDiv.addEventListener('touchstart', (e) => { e.preventDefault(); onNoteOn(i); });
+                keyDiv.addEventListener('touchend', (e) => { e.preventDefault(); onNoteOff(i); });
+
+                container.appendChild(keyDiv);
+            }
+        }
+
+        // --- GAME LOGIC ---
+        
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            const el = document.getElementById(screenId);
+            el.classList.remove('hidden');
+            setTimeout(() => el.classList.add('active'), 10);
+            STATE.currentScreen = screenId;
+        }
+
+        function selectLevel(level) {
+            STATE.selectedLevel = level;
+            renderModuleList(level);
+            showScreen('screen-modules');
+        }
+
+        function renderModuleList(levelFilter = 'all') {
+            const container = document.getElementById('module-list-container');
+            container.innerHTML = '';
+            let exercises = (levelFilter === 'all') 
+                ? [...CURRICULUM.beginner, ...CURRICULUM.intermediate, ...CURRICULUM.advanced] 
+                : CURRICULUM[levelFilter];
+
+            exercises.forEach(ex => {
+                const progress = userProgress[ex.id] || 0;
+                const isDone = progress >= ex.reps;
+                const div = document.createElement('div');
+                div.className = `module-item ${isDone ? 'completed' : ''}`;
+                div.innerHTML = `
+                    <div class="module-info">
+                        <h4>${ex.title}</h4>
+                        <p>${ex.bpm} BPM • ${ex.reps} Reps • ${progress} Done</p>
+                    </div>
+                    <div style="color: ${isDone ? 'var(--accent-green)' : 'var(--accent-red)'}">
+                        ${isDone ? 'MASTERED' : 'START'}
+                    </div>
+                `;
+                div.onclick = () => startExercise(ex);
+                container.appendChild(div);
+            });
+        }
+
+        function startExercise(exercise) {
+            STATE.currentExercise = exercise;
+            STATE.repetition = userProgress[exercise.id] || 0;
+            STATE.noteIndex = 0;
+            document.getElementById('exercise-title').textContent = exercise.title;
+            document.getElementById('tempo-display').textContent = exercise.bpm + " BPM";
+            document.getElementById('target-rep').textContent = exercise.reps;
+            document.getElementById('current-rep').textContent = STATE.repetition;
+            
+            updateProgressUI();
+            showCurrentTargetNote();
+            showScreen('screen-training');
+            stopMetronome();
+            startMetronome();
+        }
+
+        function exitTraining() {
+            stopMetronome();
+            document.querySelectorAll('.key').forEach(k => k.classList.remove('target', 'active'));
+            const toasts = document.querySelectorAll('.motivation-toast');
+            toasts.forEach(t => t.remove());
+            showScreen('screen-modules');
+            renderModuleList(STATE.selectedLevel);
+        }
+
+        function updateProgressUI() {
+            const pct = (STATE.repetition / STATE.currentExercise.reps) * 100;
+            document.getElementById('progress-fill').style.width = pct + '%';
+            document.getElementById('current-rep').textContent = STATE.repetition;
+        }
+
+        function showCurrentTargetNote() {
+            document.querySelectorAll('.key').forEach(k => k.classList.remove('target'));
+            const notesToPlay = STATE.currentExercise.notes[STATE.noteIndex];
+            
+            notesToPlay.forEach(midiNote => {
+                // Only highlight if key is currently visible on screen
+                const el = document.getElementById(`key-${midiNote}`);
+                if (el) el.classList.add('target');
+            });
+
+            const noteNames = notesToPlay.map(n => {
+                const name = KEY_NAMES[n % 12];
+                const octave = Math.floor(n / 12) - 1;
+                return `${name}${octave}`;
+            }).join(" + ");
+            document.getElementById('note-instruction').textContent = "Play: " + noteNames;
+        }
+
+        function showMotivation() {
+            const msg = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
+            const el = document.createElement('div');
+            el.className = 'motivation-toast';
+            el.innerText = msg;
+            document.getElementById('screen-training').appendChild(el);
+            setTimeout(() => el.remove(), 800);
+        }
+
+        function onNoteOn(note) {
+            const el = document.getElementById(`key-${note}`);
+            if (el) el.classList.add('active');
+            if (!STATE.currentExercise) return;
+            
+            const expectedNotes = STATE.currentExercise.notes[STATE.noteIndex];
+            if (!expectedNotes.includes(note)) return;
+            checkSequenceProgress();
+        }
+
+        function onNoteOff(note) {
+            const el = document.getElementById(`key-${note}`);
+            if (el) el.classList.remove('active');
+        }
+
+        let currentStepHits = []; 
+
+        function checkSequenceProgress() {
+            const expected = STATE.currentExercise.notes[STATE.noteIndex];
+            if (expected.length === 1) {
+                advanceStep();
+            } else {
+                const activeNotes = [];
+                document.querySelectorAll('.key.active').forEach(k => activeNotes.push(parseInt(k.dataset.note)));
+                const allHit = expected.every(n => activeNotes.includes(n));
+                if (allHit) advanceStep();
+            }
+        }
+
+        function advanceStep() {
+            currentStepHits = [];
+            showMotivation();
+            
+            const expected = STATE.currentExercise.notes[STATE.noteIndex];
+            expected.forEach(n => {
+                const el = document.getElementById(`key-${n}`);
+                if(el) {
+                    el.classList.remove('target'); 
+                    el.classList.add('active');
+                }
+            });
+
+            STATE.noteIndex++;
+            if (STATE.noteIndex >= STATE.currentExercise.notes.length) {
+                STATE.noteIndex = 0;
+                STATE.repetition++;
+                saveProgress(STATE.currentExercise.id, STATE.repetition);
+                updateProgressUI();
+                if (STATE.repetition >= STATE.currentExercise.reps) {
+                    exerciseComplete();
+                    return;
+                }
+            }
+            showCurrentTargetNote();
+        }
+
+        function saveProgress(exId, reps) {
+            userProgress[exId] = reps;
+            localStorage.setItem('bluesMasterProgress', JSON.stringify(userProgress));
+        }
+
+        function exerciseComplete() {
+            stopMetronome();
+            document.getElementById('note-instruction').textContent = "COMPLETE!";
+            document.getElementById('note-instruction').style.color = "var(--accent-green)";
+            document.querySelectorAll('.key').forEach(k => k.classList.remove('target'));
+            setTimeout(() => {
+                alert("Exercise Completed! Great work.");
+                document.getElementById('note-instruction').style.color = "var(--text-color)";
+                exitTraining();
+            }, 1000);
+        }
+
+        renderPiano();
+
+    </script>
+</body>
+</html>

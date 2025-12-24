@@ -1,0 +1,211 @@
+/*
+    ComposerUnion Academy Custom Styles
+    This file is created to implement the card layout for the three courses
+    without modifying the user's existing styles.css.
+*/
+
+/* --- Course Card Layout --- */
+.course-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between cards */
+    justify-content: center; /* Center the cards if there's extra space */
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.course-card {
+    flex: 1 1 300px; /* Flex-grow, flex-shrink, flex-basis. Allows 3 cards per row on wider screens. */
+    max-width: 350px;
+    padding: 25px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-card-link {
+    text-decoration: none; /* Remove underline from the link */
+    color: inherit; /* Inherit text color */
+    display: flex; /* Make the link a flex container to wrap the card */
+    flex: 1 1 300px; /* Match flex properties of course-card */
+    max-width: 350px; /* Match max-width of course-card */
+}
+
+.course-card-link:hover .course-card {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    cursor: pointer; /* Indicate that the card is clickable */
+}
+
+.course-card:hover {
+    /* This rule is now handled by .course-card-link:hover .course-card */
+}
+
+.course-card h3 {
+    font-size: 1.5em;
+    margin-top: 0;
+    color: #333;
+}
+
+.course-card .tag {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
+.course-card .free-tag {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.course-card .soon-tag {
+    background-color: #FFC107; /* Amber */
+    color: #333;
+}
+
+.course-card.featured {
+    border: 2px solid #007bff; /* Highlight the free course */
+    background-color: #f9f9ff;
+}
+
+.course-card .course-details {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #e0e0e0;
+}
+
+.course-card .course-details h4 {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.course-card .course-details ul {
+    list-style: disc;
+    margin-left: 20px;
+    padding-left: 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.course-card .btn {
+    margin-top: auto; /* Push button to the bottom */
+    text-align: center;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.course-card .primary-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.course-card .primary-btn:hover {
+    background-color: #0056b3;
+}
+
+.course-card .secondary-btn {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.course-card .secondary-btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* --- Certificate Module Styling --- */
+.academy-certificate-cta {
+    margin-top: 50px;
+    padding: 40px;
+    background-color: #f4f4f9;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.certificate-module {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.certificate-module .module-content,
+.certificate-module .module-action {
+    flex: 1 1 300px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.certificate-module h4 {
+    color: #007bff;
+    margin-top: 0;
+}
+
+.certificate-module .price-tag {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #28a745; /* Green for price */
+    margin: 10px 0;
+}
+
+.certificate-module .contact-email a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* --- Course Content Modules --- */
+.academy-course-content {
+    margin-top: 50px;
+}
+
+.content-module {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-left: 5px solid #007bff;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.content-placeholder {
+    padding: 15px;
+    background-color: #f0f8ff;
+    border: 1px dashed #007bff;
+    border-radius: 5px;
+    margin-top: 15px;
+    color: #555;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .course-cards-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .course-card {
+        max-width: 90%;
+    }
+
+    .certificate-module {
+        flex-direction: column;
+    }
+}
